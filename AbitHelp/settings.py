@@ -11,16 +11,26 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+with open(os.path.join(BASE_DIR, 'security/security.json')) as security_file:
+    security = json.load(security_file)
+def get_security_keys(setting, security=security):
+    try:
+        return security[setting]
+    except KeyError:
+        raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_i5rh57yrxk91f@xbastf(@cni^k$@_=lenp5$%ypg7n3y=h=u'
+SECRET_KEY = get_security_keys("secret_key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig'
-    #'login.apps.LoginConfig'
 ]
 
 MIDDLEWARE = [
@@ -78,8 +87,12 @@ WSGI_APPLICATION = 'AbitHelp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_abithelp',
+        'USER': 'abithelp_admin',
+        'PASSWORD': get_security_keys("db_password"),
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
