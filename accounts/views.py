@@ -11,4 +11,8 @@ def register(request):
             return redirect('login')
         else:
             return render(request, "register.html", {'form': form})
+        
+    if request.user.is_authenticated:
+        return redirect('index')
+
     return render(request, "register.html", context={"form": CustomUserCreationForm()})
