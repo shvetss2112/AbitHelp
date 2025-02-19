@@ -1,3 +1,4 @@
 security/
 .idea/
 __pycache__/
+.env

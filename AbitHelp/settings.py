@@ -14,23 +14,18 @@ from pathlib import Path
 import os
 import json
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv, dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-with open(os.path.join(BASE_DIR, 'security/security.json')) as security_file:
-    security = json.load(security_file)
-def get_security_keys(setting, security=security):
-    try:
-        return security[setting]
-    except KeyError:
-        raise ImproperlyConfigured("Set the {} setting".format(setting))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+load_dotenv()
+config = dotenv_values(BASE_DIR / ".env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_security_keys("secret_key")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ImproperlyConfigured("SECRET_KEY not set!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -89,11 +84,11 @@ WSGI_APPLICATION = 'AbitHelp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_abithelp',
-        'USER': 'abithelp_admin',
-        'PASSWORD': get_security_keys("db_password"),
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'db_abithelp'),
+        'USER': os.getenv('DB_USER', 'abithelp_admin'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
