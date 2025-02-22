@@ -43,13 +43,10 @@
                 <div>
                     {% if request.user.is_authenticated %}
                         Hello, {{ request.user }}
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-dark">Logout</button>
-                        </form>
+                        <a class="btn btn-dark" href="{% url 'account_logout' %}">Logout</a>
                     {% else %}
-                        <a href="/accounts/login" class="btn btn-outline-secondary me-2">Sign in</a>
-                        <a href="/accounts/register" class="btn btn-dark">Register</a>
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary me-2">Sign in</a>
+                        <a href="{% url 'account_signup' %}" class="btn btn-dark">Register</a>
                     {% endif %}
                 </div>
             </div>
