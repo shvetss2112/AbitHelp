@@ -12,9 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-import json
 from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 from str2bool import str2bool
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +42,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,7 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main.apps.MainConfig',
-    'events.apps.EventsConfig'
+    'events.apps.EventsConfig',
+    'api_auth.apps.ApiAuthConfig'
 ]
 
 MIDDLEWARE = [
@@ -73,6 +76,15 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
