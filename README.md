@@ -56,3 +56,9 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
+
+### 6. Run the project
+
+```bash
+python manage.py runserver
+```
