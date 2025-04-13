@@ -1,0 +1,55 @@
+.calendar {
+    padding: 5px min(5%, 20px);
+    border-radius: 2px;
+    margin: 4px;
+
+}
+.cal-сell {
+    margin: 3px;
+    text-align: center;
+    align-content: center;
+    height:30px;
+    padding: 0;
+
+}
+#cal-events {
+    background-color: rgb(250, 250, 250);
+    border-radius: 2px;
+    padding: 5px;
+    margin:4px;
+}
+.cal-event{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 2px;
+    border-top: 1px solid lightgray;
+}
+.cal-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+.cal-week {
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+.cal-week-day {
+    margin: 3px;
+    padding: 3px 0;
+    color: dimgray;
+
+
+}
+.cal-cell-selected {
+    background-color: rgb(26, 115, 232);
+    color:white;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin: 0 auto;
+    align-content: center;
+}
+.cal-inactive {
+    color: lightgray;
+}

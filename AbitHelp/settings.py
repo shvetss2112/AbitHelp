@@ -54,7 +54,8 @@ INSTALLED_APPS = [
 
     'main.apps.MainConfig',
     'events.apps.EventsConfig',
-    'api_auth.apps.ApiAuthConfig'
+    'api_auth.apps.ApiAuthConfig',
+    'event_calendar.apps.EventCalendarConfig'
 ]
 
 MIDDLEWARE = [
