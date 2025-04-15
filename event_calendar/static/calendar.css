@@ -4,29 +4,24 @@
     margin: 4px;
 
 }
+
+.cal-month-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+.cal-month-button {
+    cursor: pointer;
+}
+
 .cal-сell {
+    cursor: pointer;
     margin: 3px;
     text-align: center;
     align-content: center;
-    height:30px;
+    height: 30px;
     padding: 0;
 
-}
-#cal-events {
-    background-color: rgb(250, 250, 250);
-    border-radius: 2px;
-    padding: 5px;
-    margin:4px;
-}
-.cal-event{
-    padding: 10px;
-    margin: 10px;
-    border-radius: 2px;
-    border-top: 1px solid lightgray;
-}
-.cal-header {
-    text-align: center;
-    font-weight: bold;
 }
 
 .cal-week {
@@ -38,18 +33,37 @@
     margin: 3px;
     padding: 3px 0;
     color: dimgray;
-
-
 }
+
 .cal-cell-selected {
     background-color: rgb(26, 115, 232);
-    color:white;
+    color: white;
     height: 30px;
     width: 30px;
     border-radius: 50%;
     margin: 0 auto;
     align-content: center;
 }
+
 .cal-inactive {
+    cursor: auto;
     color: lightgray;
 }
+
+#cal-events {
+    background-color: rgb(250, 250, 250);
+    border-radius: 2px;
+    padding: 5px;
+    margin: 4px;
+}
+
+.cal-event {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 2px;
+    border-top: 1px solid lightgray;
+}
+
+
+
+

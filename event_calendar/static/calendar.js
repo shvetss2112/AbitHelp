@@ -1,99 +1,131 @@
 "use strict";
-function generateCalendar(domElem,currentDate){
-    let calendar = document.createElement("div");
-    calendar.className="container calendar";
-    domElem.appendChild(calendar);
 
-    generateMonthTitle(calendar,currentDate);
+export class EventCalendar {
+    date = new Date();
 
-    generateWeekBar(calendar);
+    calendar;
 
-    generateDays(calendar,currentDate);
+    #monthTitle;
+    #weekBar;
+    #dayGrid;
 
-    return calendar;
-}
-function generateDays(calendar,currentDate){
-    let iteratorSunday=getFirstSunday(currentDate);
-    do{
-        let calRow = document.createElement("div");
-        calRow.className="row justify-content-center";
-        let iteratorDay=  new Date(iteratorSunday);
-        for(let j=0;j<7;j++){
+    constructor(domElem, currentDate = this.date) {
+        this.date = currentDate;
+        this.calendar = document.createElement("div");
+        this.calendar.className = "container calendar";
+        domElem.appendChild(this.calendar);
+        this.#monthTitle = this.#generateMonthTitle(currentDate);
+        this.#weekBar = this.#generateWeekBar();
+        this.#dayGrid = this.#generateDays(currentDate);
+    }
 
-            let day = document.createElement("div");
-            day.className="col cal-сell";
+    updateCalendar(newDate) {
+        this.#dayGrid.remove();
+        this.#weekBar.remove();
+        this.#monthTitle.remove();
+        this.#monthTitle = this.#generateMonthTitle(newDate);
+        this.#weekBar = this.#generateWeekBar(newDate);
+        this.#dayGrid = this.#generateDays(newDate);
+        this.date = newDate;
+    }
 
+    #generateMonthTitle(date) {
+        let month = this.#getMonthTitle(date);
+        let year = this.date.getFullYear();
+        let monthTitle = document.createElement("div");
+        monthTitle.className = "row justify-content-center cal-month-header";
+        this.calendar.appendChild(monthTitle);
+        let leftB = document.createElement("div");
+        leftB.className = "col cal-month-button cal-month-button-left cal-btn";
+        leftB.textContent = '<';
+        leftB.addEventListener("click", () => {
+            this.updateCalendar(new Date(this.date.getFullYear(), this.date.getMonth() - 1, this.date.getDate()));
+        })
+        let title = document.createElement("div");
+        title.className = "col";
+        title.textContent = `${month} ${year}`;
+        let rightB = document.createElement("div");
+        rightB.className = "col cal-month-button cal-month-button-right";
+        rightB.textContent = '>';
+        rightB.addEventListener("click", () => {
+            this.updateCalendar(new Date(this.date.getFullYear(), this.date.getMonth() + 1, this.date.getDate()));
+        })
+        monthTitle.appendChild(leftB);
+        monthTitle.appendChild(title);
+        monthTitle.appendChild(rightB);
+        return monthTitle;
+    }
+
+    #generateWeekBar() {
+        let weekBar = document.createElement("div");
+        weekBar.className = "row justify-content-center cal-week";
+        this.calendar.appendChild(weekBar);
+        let linkDayTitleList = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        for (const day of linkDayTitleList) {
+            let weekDay = document.createElement("div");
+            weekDay.className = "col cal-сell";
             let innerBuf = document.createElement("div");
-            innerBuf.className="cal-day";
-            if(currentDate.getMonth()!=iteratorDay.getMonth()){
-                innerBuf.classList.add("cal-inactive");
-            }
-            if(currentDate.getDate()==iteratorDay.getDate()){
-                innerBuf.classList.add("cal-cell-selected");
-            }
-            innerBuf.textContent=iteratorDay.getDate();
-            calRow.appendChild(day);
-            day.appendChild(innerBuf);
-            iteratorDay.setDate(iteratorDay.getDate()+1);
+            innerBuf.className = "cal-week-day";
+            innerBuf.textContent = day;
+            weekDay.appendChild(innerBuf);
+            weekBar.appendChild(weekDay);
         }
-        calendar.appendChild(calRow);
-        iteratorSunday.setDate(iteratorSunday.getDate()+7);
-    }while(iteratorSunday.getMonth() == currentDate.getMonth())
-}
-function getFirstSunday(date){
-    let res = new Date(date);
-    res.setDate(1);
-    res.setDate(res.getDate()-res.getDay());
-    return res;
-}
-function generateWeekBar(calendar){
-    let weekBar = document.createElement("div");
-    weekBar.className="row justify-content-center cal-week";
-    calendar.appendChild(weekBar);
-    let linkDayTitleList=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
-    for(const day of linkDayTitleList){
-        let weekDay = document.createElement("div");
-        weekDay.className="col cal-сell";
-        let innerBuf=document.createElement("div"); innerBuf.className = "cal-week-day";
-        innerBuf.textContent=day;
-        weekDay.appendChild(innerBuf);
-        weekBar.appendChild(weekDay);
+        return weekBar;
+    }
+
+    #generateDays(currentDate) {
+        let container = document.createElement('div');
+        let iteratorSunday = this.#getFirstSunday(currentDate);
+        do {
+            let calRow = document.createElement("div");
+            calRow.className = "row justify-content-center";
+            let iteratorDay = new Date(iteratorSunday);
+
+            for (let j = 0; j < 7; j++) {
+                let day = document.createElement("div");
+                day.className = "col cal-сell";
+
+                let innerBuf = document.createElement("div");
+                innerBuf.className = "cal-day";
+
+                if (currentDate.getMonth() !== iteratorDay.getMonth()) {
+                    innerBuf.classList.add("cal-inactive");
+                } else if (currentDate.getDate() === iteratorDay.getDate()) {
+                    innerBuf.classList.add("cal-cell-selected");
+                }
+
+                innerBuf.textContent = iteratorDay.getDate();
+                if (!innerBuf.classList.contains("cal-inactive")) {
+                    innerBuf.addEventListener("click", () => {
+                        let upDate = new Date(currentDate);
+                        upDate.setDate(innerBuf.textContent);
+                        this.updateCalendar(upDate);
+                    });
+                }
+                calRow.appendChild(day);
+                day.appendChild(innerBuf);
+                iteratorDay.setDate(iteratorDay.getDate() + 1);
+            }
+            container.appendChild(calRow);
+            iteratorSunday.setDate(iteratorSunday.getDate() + 7);
+        } while (iteratorSunday.getMonth() === currentDate.getMonth())
+        this.calendar.appendChild(container);
+        return container;
+    }
+
+    #getFirstSunday(date) {
+        let res = new Date(date);
+        res.setDate(1);
+        res.setDate(res.getDate() - res.getDay());
+        return res;
+    }
+
+    #getMonthTitle(date) {
+        let indexTitles = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+        return indexTitles[date.getMonth()];
+    }
+
+    remove() {
+        this.calendar.remove();
     }
 }
-function generateMonthTitle(calendar,date){
-    let month = getMonthTitle(date);
-    let monthTitle = document.createElement("div");
-    monthTitle.className="row justify-content-center cal-header";
-    calendar.appendChild(monthTitle);
-    let leftB= document.createElement("div");
-    leftB.className="col cal-month-button cal-month-button-left";
-    leftB.textContent='<';
-    let title= document.createElement("div");
-    title.className="col";
-    title.textContent=month;
-    let rightB= document.createElement("div");
-    rightB.className="col cal-month-button cal-month-button-right";
-    rightB.textContent='>';
-    monthTitle.appendChild(leftB);
-    monthTitle.appendChild(title);
-    monthTitle.appendChild(rightB);
-}
-function getMonthTitle(date){
-    let indexTitles=[
-        'Січень',
-        'Лютий',
-        'Березень',
-        'Квітень',
-        'Травень',
-        'Червень',
-        'Липень',
-        'Серпень',
-        'Вересень',
-        'Жовтень',
-        'Листопад',
-        'Грудень'];
-    return indexTitles[date.getMonth()];
-}
-let container = document.getElementById("cal-container");
-
-let calendar = generateCalendar(container,new Date(2025,2,8));

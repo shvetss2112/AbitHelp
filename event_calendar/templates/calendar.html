@@ -3,9 +3,8 @@
 {% block style %}<link rel="stylesheet" href="../static/calendar.css" >{% endblock %}
 {% block content %}
 <div class="row container-fluid justify-content-center">
-    <div class="col-lg-3 col-md-4 col-sm-8" id="cal-container">
-    </div>
-    <div class="col-lg-9 col-md-8 col-sm-12">
+    <div class="col-lg-3 col-md-4 col-sm-8" id="cal-container"></div>
+    <div class="col-lg-9 col-md-8 col-sm-12" id="cal-events-container">
         <div class="container" id="cal-events">
             <div class="row text-center"><h4>Події 8 березня</h4></div>
             <div class="cal-event">
@@ -39,4 +38,4 @@
     </div>
 </div>
 {% endblock %}
-{% block script %}<script src="../static/calendar.js"></script>{% endblock %}
+{% block script %}<script type=module src="../static/main.js"></script>{% endblock %}
