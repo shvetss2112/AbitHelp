@@ -4,7 +4,7 @@ export class EventCalendar {
     date = new Date();
 
     calendar;
-
+    #eventList;
     #monthTitle;
     #weekBar;
     #dayGrid;
@@ -19,6 +19,9 @@ export class EventCalendar {
         this.#dayGrid = this.#generateDays(currentDate);
     }
 
+    addEventList(newEventList) {
+        this.#eventList=newEventList;
+    }
     updateCalendar(newDate) {
         this.#dayGrid.remove();
         this.#weekBar.remove();
@@ -100,6 +103,9 @@ export class EventCalendar {
                         let upDate = new Date(currentDate);
                         upDate.setDate(innerBuf.textContent);
                         this.updateCalendar(upDate);
+                        if(this.#eventList){
+                            this.#eventList.updateEventList(this.date);
+                        }
                     });
                 }
                 calRow.appendChild(day);
@@ -128,4 +134,48 @@ export class EventCalendar {
     remove() {
         this.calendar.remove();
     }
+}
+export class EventList{
+    date=new Date();
+    eventList;
+    #eventListContainer;
+
+    constructor(domElem){
+        this.#eventListContainer = domElem;
+        this.#generateEventList(this.date);
+    }
+    updateEventList(date){
+        this.eventList.remove();
+        this.#generateEventList(date);
+
+    }
+    #generateEventList(date){
+        this.eventList=document.createElement("div");
+        this.eventList.className="container cal-event-list";
+        this.#eventListContainer.appendChild(this.eventList);
+
+        let event = this.#getEventByDate();
+        for(let i=0;i<3;i++){
+            this.#generateEventElem(event);
+            console.log(i);
+        }
+        this.date=date;
+
+    }
+
+    #generateEventElem(json_event){
+        let event=document.createElement('div');
+        event.className='cal-event';
+        event.textContent=json_event.content;
+        this.eventList.appendChild(event);
+    }
+    #requestEvents(){
+
+    }
+    #getEventByDate(){
+        let json_text='{"content":"test content"}';
+        return JSON.parse(json_text);
+    }
+
+
 }
