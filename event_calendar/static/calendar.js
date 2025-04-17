@@ -20,8 +20,9 @@ export class EventCalendar {
     }
 
     addEventList(newEventList) {
-        this.#eventList=newEventList;
+        this.#eventList = newEventList;
     }
+
     updateCalendar(newDate) {
         this.#dayGrid.remove();
         this.#weekBar.remove();
@@ -103,7 +104,7 @@ export class EventCalendar {
                         let upDate = new Date(currentDate);
                         upDate.setDate(innerBuf.textContent);
                         this.updateCalendar(upDate);
-                        if(this.#eventList){
+                        if (this.#eventList) {
                             this.#eventList.updateEventList(this.date);
                         }
                     });
@@ -135,45 +136,77 @@ export class EventCalendar {
         this.calendar.remove();
     }
 }
-export class EventList{
-    date=new Date();
+
+export class EventList {
+    date = new Date();
     eventList;
     #eventListContainer;
 
-    constructor(domElem){
+    constructor(domElem) {
         this.#eventListContainer = domElem;
         this.#generateEventList(this.date);
     }
-    updateEventList(date){
+
+    updateEventList(date) {
         this.eventList.remove();
         this.#generateEventList(date);
 
     }
-    #generateEventList(date){
-        this.eventList=document.createElement("div");
-        this.eventList.className="container cal-event-list";
-        this.#eventListContainer.appendChild(this.eventList);
 
+    async #generateEventList(date) {
+        this.eventList = document.createElement("div");
+        this.eventList.className = "container cal-event-list";
+        this.#eventListContainer.appendChild(this.eventList);
+        this.date = date;
         let event = this.#getEventByDate();
-        for(let i=0;i<3;i++){
-            this.#generateEventElem(event);
-            console.log(i);
-        }
-        this.date=date;
+        let url = this.#requestUrl();
+        this.#generateNoEeventElem();
+        let response = await fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length != 0) {
+                    this.eventList.firstChild.remove();
+                    for (event of data) {
+                        this.#generateEventElem(event);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
 
     }
 
-    #generateEventElem(json_event){
-        let event=document.createElement('div');
-        event.className='cal-event';
-        event.textContent=json_event.content;
+    #requestUrl() {
+        let str_date = this.date.toISOString().split('T')[0];
+        let lte_date = new Date(this.date);
+        lte_date.setDate(lte_date.getDate() + 1);
+        let str_lte_date = lte_date.toISOString().split('T')[0];
+        let params = new URLSearchParams({date__gte: str_date, date__lte: str_lte_date});
+        return '/api/events/?' + params.toString();
+    }
+
+    #generateEventElem(json_event) {
+        let event = document.createElement('div');
+        event.className = 'cal-event';
+        event.textContent = json_event.content;
         this.eventList.appendChild(event);
     }
-    #requestEvents(){
 
+    #generateNoEeventElem() {
+        let event = document.createElement('div');
+        event.className = 'cal-event';
+        event.textContent = "Немає запланованих подій на цей період";
+        this.eventList.appendChild(event);
     }
-    #getEventByDate(){
-        let json_text='{"content":"test content"}';
+
+    #getEventByDate() {
+        let json_text = '{"content":"test content"}';
         return JSON.parse(json_text);
     }
 
