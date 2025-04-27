@@ -1,99 +1,202 @@
 "use strict";
-function generateCalendar(domElem,currentDate){
-    let calendar = document.createElement("div");
-    calendar.className="container calendar";
-    domElem.appendChild(calendar);
 
-    generateMonthTitle(calendar,currentDate);
-
-    generateWeekBar(calendar);
-
-    generateDays(calendar,currentDate);
-
-    return calendar;
+function generateDiv(parent, className = "", textContent = "") {
+    let div = document.createElement("div");
+    div.className = className;
+    div.textContent = textContent;
+    parent.appendChild(div);
+    return div;
 }
-function generateDays(calendar,currentDate){
-    let iteratorSunday=getFirstSunday(currentDate);
-    do{
-        let calRow = document.createElement("div");
-        calRow.className="row justify-content-center";
-        let iteratorDay=  new Date(iteratorSunday);
-        for(let j=0;j<7;j++){
 
-            let day = document.createElement("div");
-            day.className="col cal-сell";
+export class EventCalendar {
+    date = new Date();
+    _container;
+    _calendar;
+    _monthTitle;
+    _weekBar;
+    _dayGrid;
 
-            let innerBuf = document.createElement("div");
-            innerBuf.className="cal-day";
-            if(currentDate.getMonth()!=iteratorDay.getMonth()){
-                innerBuf.classList.add("cal-inactive");
-            }
-            if(currentDate.getDate()==iteratorDay.getDate()){
-                innerBuf.classList.add("cal-cell-selected");
-            }
-            innerBuf.textContent=iteratorDay.getDate();
-            calRow.appendChild(day);
-            day.appendChild(innerBuf);
-            iteratorDay.setDate(iteratorDay.getDate()+1);
+    _eventList;
+    _events = [];
+
+    constructor(domElem, currentDate = this.date) {
+        this._container = domElem;
+        this.date = currentDate;
+        this.updateCalendar(this.date);
+        this._makeRequest();
+    }
+
+    updateCalendar(newDate = this.date) {
+        this.remove();
+        if (this.date.getMonth() !== newDate.getMonth() || this.date.getFullYear() !== newDate.getFullYear()) {
+            this._makeRequest(newDate);
         }
-        calendar.appendChild(calRow);
-        iteratorSunday.setDate(iteratorSunday.getDate()+7);
-    }while(iteratorSunday.getMonth() == currentDate.getMonth())
-}
-function getFirstSunday(date){
-    let res = new Date(date);
-    res.setDate(1);
-    res.setDate(res.getDate()-res.getDay());
-    return res;
-}
-function generateWeekBar(calendar){
-    let weekBar = document.createElement("div");
-    weekBar.className="row justify-content-center cal-week";
-    calendar.appendChild(weekBar);
-    let linkDayTitleList=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
-    for(const day of linkDayTitleList){
-        let weekDay = document.createElement("div");
-        weekDay.className="col cal-сell";
-        let innerBuf=document.createElement("div"); innerBuf.className = "cal-week-day";
-        innerBuf.textContent=day;
-        weekDay.appendChild(innerBuf);
-        weekBar.appendChild(weekDay);
+        this.date = new Date(newDate);
+        this._calendar = generateDiv(this._container, "container cal-calendar");
+        this._monthTitle = this._generateMonthBar();
+        this._weekBar = this._generateWeekBar();
+        this._dayGrid = this._generateDayGrid();
+        if (this._eventList) {
+            this._eventList.updateEventList(this._events[this.date.getDate()]);
+        }
+    }
+
+    _generateMonthBar() {
+        let month = this._getMonthTitle(this.date);
+        let year = this.date.getFullYear();
+
+        let monthTitle = generateDiv(this._calendar, "row justify-content-center cal-month-bar");
+
+        let leftB = generateDiv(monthTitle, "col cal-month-btn", '<');
+        let title = generateDiv(monthTitle, "col", `${month} ${year}`);
+        let rightB = generateDiv(monthTitle, "col cal-month-btn", '>');
+
+        let leftUpDate = new Date(this.date.getFullYear(), this.date.getMonth() - 1, this.date.getDate());
+        let rightUpDate = new Date(this.date.getFullYear(), this.date.getMonth() + 1, this.date.getDate());
+
+        leftB.addEventListener("click", () => this.updateCalendar(leftUpDate));
+        rightB.addEventListener("click", () => this.updateCalendar(rightUpDate));
+
+        return monthTitle;
+    }
+
+    _generateWeekBar() {
+        let weekBar = generateDiv(this._calendar, "row justify-content-center cal-week-bar");
+        let weekDayTitleList = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        for (const day of weekDayTitleList) {
+            let weekDay = generateDiv(weekBar, "col cal-сell");
+            let innerBuf = generateDiv(weekDay, "cal-week-day", day);
+        }
+        return weekBar;
+    }
+
+    _generateDayGrid() {
+        let dayGrid = generateDiv(this._calendar, 'cal-day-grid');
+        let iteratorSunday = this._getFirstSunday(this.date);
+        do {
+            let calRow = generateDiv(dayGrid, "row justify-content-center");
+            let iteratorDay = new Date(iteratorSunday);
+
+            for (let j = 0; j < 7; j++) {
+                let cal_cell = generateDiv(calRow, "col cal-сell");
+                let cal_day = generateDiv(cal_cell, "cal-day", iteratorDay.getDate());
+
+                if (this._events[iteratorDay.getDate()]) {
+                    cal_day.classList.add("cal-day-marked");
+                }
+
+                if (this.date.getMonth() !== iteratorDay.getMonth()) {
+                    cal_day.classList.add("cal-day-inactive");
+                } else if (this.date.getDate() === iteratorDay.getDate()) {
+                    cal_day.classList.add("cal-day-selected");
+                } else {
+                    let upDate = new Date(this.date.getFullYear(), this.date.getMonth(), iteratorDay.getDate());
+                    cal_cell.addEventListener("click", () => this.updateCalendar(upDate));
+                }
+
+                iteratorDay.setDate(iteratorDay.getDate() + 1);
+            }
+            iteratorSunday.setDate(iteratorSunday.getDate() + 7);
+        } while (iteratorSunday.getMonth() === this.date.getMonth())
+        return dayGrid;
+    }
+
+    _getFirstSunday(date) {
+        let res = new Date(date);
+        res.setDate(1);
+        res.setDate(res.getDate() - res.getDay());
+        return res;
+    }
+
+    _getMonthTitle(date) {
+        let indexTitles = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'];
+        return indexTitles[date.getMonth()];
+    }
+
+    remove() {
+        if (this._calendar) {
+            this._calendar.remove();
+        }
+    }
+
+    async _makeRequest(newDate = this.date) {
+        this._events = [];
+        let url = this._requestUrl(newDate);
+        let response = await fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                for (let event of data) {
+                    let eventDate = new Date(event.date);
+                    if (!this._events[eventDate.getDate()]) {
+                        this._events[eventDate.getDate()] = [];
+
+                    }
+                    this._events[eventDate.getDate()].push(event);
+                }
+                this.updateCalendar();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+
+    }
+
+    _requestUrl(newDate) {
+        let gte_date = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+        let lte_date = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 1);
+        let str_gte_date = gte_date.toLocaleString('sv-SE', {hour12: false}).split(" ")[0];
+        let str_lte_date = lte_date.toLocaleString('sv-SE', {hour12: false}).split(" ")[0];
+        let params = new URLSearchParams({date__gte: str_gte_date, date__lte: str_lte_date});
+        return '/api/events/?' + params.toString();
+    }
+
+    addEventList(newEventList) {
+        this._eventList = newEventList;
     }
 }
-function generateMonthTitle(calendar,date){
-    let month = getMonthTitle(date);
-    let monthTitle = document.createElement("div");
-    monthTitle.className="row justify-content-center cal-header";
-    calendar.appendChild(monthTitle);
-    let leftB= document.createElement("div");
-    leftB.className="col cal-month-button cal-month-button-left";
-    leftB.textContent='<';
-    let title= document.createElement("div");
-    title.className="col";
-    title.textContent=month;
-    let rightB= document.createElement("div");
-    rightB.className="col cal-month-button cal-month-button-right";
-    rightB.textContent='>';
-    monthTitle.appendChild(leftB);
-    monthTitle.appendChild(title);
-    monthTitle.appendChild(rightB);
-}
-function getMonthTitle(date){
-    let indexTitles=[
-        'Січень',
-        'Лютий',
-        'Березень',
-        'Квітень',
-        'Травень',
-        'Червень',
-        'Липень',
-        'Серпень',
-        'Вересень',
-        'Жовтень',
-        'Листопад',
-        'Грудень'];
-    return indexTitles[date.getMonth()];
-}
-let container = document.getElementById("cal-container");
 
-let calendar = generateCalendar(container,new Date(2025,2,8));
+export class EventList {
+    _container;
+    eventList;
+
+    constructor(domElem) {
+        this._container = domElem;
+        this._generateEventList();
+    }
+
+    updateEventList(data) {
+        this.remove();
+        this._generateEventList(data);
+    }
+
+    _generateEventList(data) {
+        this.eventList = document.createElement("div");
+        this.eventList.className = "container cal-event-list";
+        this._container.appendChild(this.eventList);
+        if (!data) {
+            this._generateNoEeventElem();
+        } else {
+            for (let event of data) {
+                this._generateEventElem(event);
+            }
+        }
+    }
+
+    _generateEventElem(new_event) {
+        let event = generateDiv(this.eventList, "cal-event");
+        event.textContent = new_event.content;
+    }
+
+    _generateNoEeventElem() {
+        generateDiv(this.eventList, "cal-event", "Немає запланованих подій на цей період");
+    }
+
+    remove() {
+        this.eventList.remove();
+    }
+}
