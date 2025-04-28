@@ -189,7 +189,10 @@ export class EventList {
 
     _generateEventElem(new_event) {
         let event = generateDiv(this.eventList, "cal-event");
-        event.textContent = new_event.content;
+        let eventText = document.createElement("a");
+        event.appendChild(eventText);
+        eventText.setAttribute('href','#/events/');
+        eventText.textContent = new_event.content;
     }
 
     _generateNoEeventElem() {

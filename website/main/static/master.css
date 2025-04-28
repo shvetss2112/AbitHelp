@@ -2,17 +2,32 @@
     background-color:rgba(34, 40, 49, 1);
     color:white;
 }
-body{
-    background-image:url('./background.png');
-    background-repeat: repeat;
-    background-size: 30%;
-
-}
 html, body {
     height: 100%;
     margin: 0;
+    background-image:url('./background.png');
+    background-repeat: repeat;
+    background-size: 30%;
+}
+a{
+    text-decoration: none;
+    background: none;
+    color: inherit;
 }
 #content{
-
-    height:100%;
+    min-height:90%;
+}
+.nav-active{
+    color:white;
+}
+.nav-active::after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius:2px;
+}
+.user-nickname{
+    margin: 5px;
 }
