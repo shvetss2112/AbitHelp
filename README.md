@@ -1,0 +1,3 @@
+-   **`scraper/`**: Contains the scraping logic and scripts responsible for extracting data from target college websites.
+-   **`telegram-bot/`**: Implements a Telegram bot that can deliver news and event updates directly to users.
+-   **`website/`**: Holds the codebase for the web application that displays the aggregated data in a user-friendly interface
