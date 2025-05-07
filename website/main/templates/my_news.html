@@ -1,21 +1,18 @@
 {% extends "master.html" %}
 {% block title %}Новини{% endblock %}
-{% block style %}<link href="../static/my_news.css" rel="stylesheet">{% endblock %}
+{% block style %}
+    <link href="../static/my_news.css" rel="stylesheet">{% endblock %}
 {% block content %}
     <div class="row container-fluid my-5" id="news-filter-bar">
         <div class="col-4 align-content-center">
             <div>
                 <form class="row">
                     <div class="col align-content-center">
-                        <select class="form-select col">
-                        <option selected>Value</option>
-                        <option value="1">Value1</option>
-                        <option value="2">Value2</option>
-                        <option value="3">Value3</option>
-                    </select>
+                        <input class="form-control search mb-0" type="search" placeholder="Пошук" autocomplete="off">
                     </div>
                     <div class="col-4">
-                        <button type="button" class="btn funnel-btn" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <button type="button" class="btn funnel-btn" data-bs-toggle="modal"
+                                data-bs-target="#filterModal">
                             <i class="bi fs-3 bi-funnel"></i>
                         </button>
                     </div>
@@ -23,31 +20,36 @@
             </div>
         </div>
         <div class="col align-content-center text-end">
-            <button type="button" class="btn btn-lg plus-btn">
-                        <i class="bi fs-1 bi-plus-circle"></i>
+            <button type="button" class="btn btn-lg plus-btn" data-bs-toggle="modal"
+                    data-bs-target="#subscribeModal">
+                <i class="bi fs-1 bi-plus-circle"></i>
             </button>
         </div>
     </div>
-    <h5>Mої новини:</h5>
+    <div class="mb-2 ms-4">
+        <button class="btn btn-news btn-news-active">
+            Підписки
+        </button>
+        <button class="btn btn-news">
+            Рекомендаціі
+        </button>
+    </div>
     <div class="news-sheet-container">
         <div class="news-sheet row ">
-        {% for news in page_obj %}
-            <div class = "col-lg-5 col-md-10 mx-lg-5 mx-md-0 mx-sm-0 my-3 news-item">
-                <div class="row news-content">
-                    <div class="col news-text">
-                        {{ news }}
-                    </div>
-                    <div class="col text-end news-image-frame">
-                        <img class= "news-image" src="{{ news.image.url }}">
+            {% for news in page_obj %}
+                <div class="col-lg-5 col-md-10 mx-lg-5 mx-md-0 mx-sm-0 my-3 news-item">
+                    <div class="row news-content">
+                        <div class="col news-text">
+                            {{ news }}
+                        </div>
+                        <div class="col text-end news-image-frame">
+                            <img class="news-image" src="{{ news.image.url }}">
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-    </div>
-
-
-
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
@@ -67,53 +69,77 @@
     </div>
 
     <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-4 p-3">
-      <div class="modal-header border-0">
-        <h5 class="modal-title text-muted" id="filterModalLabel">діалог фільтрів пошуку</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Часові межі</label>
-          <div class="d-flex gap-2">
-            <span class="align-self-center">З</span>
-            <input type="text" class="form-control" placeholder="??.??.??">
-            <span class="align-self-center">До</span>
-            <input type="text" class="form-control" placeholder="??.??.??">
-          </div>
-        </div>
+        <div class="modal-dialog">
+            <div class="modal-content rounded-4 p-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="filterModalLabel">Діалог фільтрів пошуку</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Часові межі</label>
+                        <div class="d-flex gap-2">
+                            <span class="align-self-center">З</span>
+                            <input type="text" class="form-control" placeholder="??.??.??">
+                            <span class="align-self-center">До</span>
+                            <input type="text" class="form-control" placeholder="??.??.??">
+                        </div>
+                    </div>
 
-        <div class="mb-3">
-          <label class="form-label">Ресурс</label>
-          <select class="form-select">
-            <option selected>Any</option>
-            <option>Facebook</option>
-            <option>Twitter</option>
-            <option>Instagram</option>
-          </select>
-        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ресурс</label>
+                        <select class="form-select">
+                            <option selected>Any</option>
+                            <option>Facebook</option>
+                            <option>Twitter</option>
+                            <option>Instagram</option>
+                        </select>
+                    </div>
 
-        <div class="mb-3">
-          <label class="form-label">Тільки новини які включають слова</label>
-          <input type="text" class="form-control" placeholder="Value">
-        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Тільки новини які включають слова</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
 
-        <div class="mb-3">
-          <label class="form-label">Не включають жодного з слів</label>
-          <input type="text" class="form-control" placeholder="Value">
-        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Не включають жодного з слів</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
 
-        <div class="mb-3">
-          <label class="form-label">Включають будь яке з слів</label>
-          <input type="text" class="form-control" placeholder="Value">
+                    <div class="mb-3">
+                        <label class="form-label">Включають будь яке з слів</label>
+                        <input type="text" class="form-control" placeholder="Value">
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button class="btn w-100">Застосувати</button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer border-0">
-        <button class="btn w-100">Застосувати</button>
-      </div>
     </div>
-  </div>
-</div>
+
+    <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content rounded-4 p-3">
+        <div class="modal-header border-0">
+            <h5 class="modal-title" id="filterModalLabel">Підписатись на ресурс</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <select class="form-select">
+                    <option selected>Any</option>
+                    <option>Facebook</option>
+                    <option>Twitter</option>
+                    <option>Instagram</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <div class="modal-footer border-0">
+                    <button class="btn w-100">Підписатись</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}{% endblock %}

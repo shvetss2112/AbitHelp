@@ -15,10 +15,7 @@
 .news-sheet{
     width: 110%;
 }
-.form-select{
-    background-color: #1C2027;
-    color:white;
-}
+
 .news-item{
     background-color: #1C2027;
     border-radius: 20px;
@@ -40,3 +37,14 @@
     width: 10rem;
     height: 10rem;
 }
+h5{
+    color:white;
+}
+ .btn-news{
+    background-color: #1C2027;
+    color:white;
+ }
+ .btn-news-active{
+    background-color: #323444;
+    color:white;
+ }
