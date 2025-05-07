@@ -3,7 +3,7 @@
 function generateDiv(parent, className = "", textContent = "") {
     let div = document.createElement("div");
     div.className = className;
-    div.textContent = textContent;
+    div.innerHTML = textContent;
     parent.appendChild(div);
     return div;
 }
@@ -186,13 +186,39 @@ export class EventList {
             }
         }
     }
-
+    _listTimeString(new_event){
+        let date = new Date(new_event.date);
+        let buf_hour= (date.getHours()<10)?"0":'';
+        let buf_min= (date.getMinutes()<10)?"0":'';
+        let date_time = buf_hour+date.getHours()+':'+buf_min+date.getMinutes();
+        return date_time;
+    }
+    _listDateString(new_event){
+        let date = new Date(new_event.date);
+        let buf_day= (date.getDate()<10)?"0":'';
+        let buf_month= (date.getMonth()<10)?"0":'';
+        let date_time = buf_day+date.getDate()+'.'+buf_month+date.getMonth()+'.'+date.getFullYear();
+        return date_time;
+    }
     _generateEventElem(new_event) {
-        let event = generateDiv(this.eventList, "cal-event");
-        let eventText = document.createElement("a");
-        event.appendChild(eventText);
-        eventText.setAttribute('href','#/events/');
-        eventText.textContent = new_event.content;
+        let date_time = this._listTimeString(new_event);
+        let date_date=this._listDateString(new_event);
+        let event = generateDiv(this.eventList, "cal-event row");
+        let text_container = generateDiv(event,"col-sm-12 col-lg-10");
+        let event_text = document.createElement("a");
+        event.appendChild(event_text);
+        event_text.setAttribute('href','#/events/'+new_event.id);
+        text_container.appendChild(event_text);
+        let dop_col = generateDiv(event,"col col-lg-2");
+        let dop_row = generateDiv(dop_col, "row h-100 align-items-stretch");
+        let dop_date = generateDiv(generateDiv(dop_row,"col col col-lg-12 col-md-6"),"list-item-date",date_date+'<br>'+date_time);
+        let like_btn = generateDiv(generateDiv(dop_row,"col col-lg-12 col-md-6 text-end d-flex"),"btn ms-auto mt-auto");
+        let heart = document.createElement("i");
+        heart.className = "bi bi-heart-fill";
+        like_btn.appendChild(heart);
+
+
+        event_text.textContent = new_event.content;
     }
 
     _generateNoEeventElem() {

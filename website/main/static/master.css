@@ -1,5 +1,5 @@
 *{
-    background-color:rgba(34, 40, 49, 1);
+    background:transparent;
     font-family: "Inter", sans-serif;
     color:white;
 }
@@ -15,8 +15,13 @@ a{
     background: none;
     color: inherit;
 }
+#page{
+    background-color:rgba(34, 40, 49, 1);
+    min-height:97%;
+}
 #content{
-    min-height:90%;
+    background-color:rgba(34, 40, 49, 1);
+    height:100%;
 }
 .nav-active{
     color:white;
@@ -31,4 +36,32 @@ a{
 }
 .user-nickname{
     margin: 5px;
+}
+
+.modal-content{
+    color: white;
+    background-color:rgba(34, 40, 49, 1);
+    border: 4px solid #161A1FFF;
+
+}
+.form-select{
+    background-color:#2A3442;
+    border-color:#1B2028;
+    color: white;
+}
+.form-control{
+    background-color:#2A3442;
+    border-color:#1B2028;
+}
+
+.form-select:focus{
+    background-color:rgba(34, 40, 49, 1);
+    color: white;
+}
+.form-control::placeholder{
+    color: dimgray;
+}
+.form-control:focus{
+background-color:rgba(34, 40, 49, 1);
+    color: white;
 }

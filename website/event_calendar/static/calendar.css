@@ -1,5 +1,4 @@
-.calendar {
-    padding: 5px min(5%, 20px);
+.cal-calendar {
     border-radius: 2px;
     margin: 4px;
 }
@@ -18,10 +17,11 @@
 }
 
 .cal-сell {
-    margin: 3px;
+    margin: auto;
     text-align: center;
     align-content: center;
-    height: 30px;
+    height: 2.3rem;
+    width: 2.3rem;
     padding: 0;
 }
 
@@ -32,8 +32,8 @@
 
 .cal-week-day {
     cursor: auto;
-    margin: 3px;
-    padding: 3px 0;
+    margin: 0;
+    padding: 0.2rem 0;
     color: #7a7a7a;
 }
 
@@ -52,6 +52,7 @@
     border-radius: 50%;
     margin: 0 auto;
     align-content: center;
+    text-align: center;
 }
 
 .cal-day-selected {
@@ -61,9 +62,12 @@
     border-radius: 50%;
     margin: 0 auto;
     align-content: center;
+    text-align: center;
 }
 
 .cal-day-inactive {
+    align-content: center;
+    text-align: center;
     cursor: auto;
     color: #7a7a7a;
 }
@@ -88,5 +92,7 @@
     height: 3px;
     background-color: #161A1FFF;
     border-radius: 3px;
-
+}
+.list-item-date{
+    color: #7a7a7a;
 }
