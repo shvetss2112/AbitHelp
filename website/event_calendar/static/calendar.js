@@ -1,4 +1,4 @@
-"use strict";
+    "use strict";
 
 function generateDiv(parent, className = "", textContent = "") {
     let div = document.createElement("div");

@@ -1,22 +1,9 @@
-.funnel-btn{
-    text-align: center;
-}
-.bi-funnel{
-    margin:auto;
-}
 .plus-btn{
     margin-left:auto;
 }
-.bi-plus-sircle{
-}
-
-.bi-plus-sircle{
-
-}
-
-.plus-btn-img{
-    height: 4rem;
-    width: 4rem;
+.news-sheet-container{
+    justify-content: center;
+    display: flex;
 }
 .news-sheet::before{
     content: "";
@@ -26,7 +13,7 @@
     border-radius: 3px;
 }
 .news-sheet{
-
+    width: 110%;
 }
 .form-select{
     background-color: #1C2027;
