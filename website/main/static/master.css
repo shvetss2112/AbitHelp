@@ -54,12 +54,21 @@ a{
     border-color:#1B2028;
 }
 .form-select{
+    border-color:#1B2028;
     background-color:#2A3442;
     color:white;
 }
 .form-select:focus{
+    box-shadow: none;
+    outline: none;
+    border-color:white;
     background-color:rgba(34, 40, 49, 1);
     color: white;
+}
+.form-control:focus{
+    border-color:white;
+    box-shadow: none;
+    outline: none;
 }
 .form-control::placeholder{
     color: dimgray;
