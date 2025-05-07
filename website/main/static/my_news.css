@@ -8,14 +8,15 @@
 .news-sheet::before{
     content: "";
     height: 1px;
-    width: 100%;
+    width: 90%;
     border: 2px solid #161A1FFF;
     border-radius: 3px;
 }
 .news-sheet{
-    width: 100%;
 }
-
+.settings-sheet{
+    width:90%;
+}
 .news-item{
     background-color: #1C2027;
     border-radius: 20px;

@@ -3,39 +3,44 @@
 {% block style %}
     <link href="../static/my_news.css" rel="stylesheet">{% endblock %}
 {% block content %}
-    <div class="row container-fluid my-5" id="news-filter-bar">
-        <div class="col-4 align-content-center">
-            <div>
-                <form class="row">
-                    <div class="col align-content-center">
-                        <input class="form-control search mb-0" type="search" placeholder="Пошук" autocomplete="off">
+
+        <div class=" mx-auto settings-sheet">
+            <div class="row container-fluid my-5" id="news-filter-bar">
+                <div class="col-4 align-content-center">
+                    <div>
+                        <form class="row">
+                            <div class="col px-0 align-content-center">
+                                <input class="form-control mx-0 search mb-0" type="search" placeholder="Пошук"
+                                       autocomplete="off">
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn funnel-btn" data-bs-toggle="modal"
+                                        data-bs-target="#filterModal">
+                                    <i class="bi fs-3 bi-funnel"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-4">
-                        <button type="button" class="btn funnel-btn" data-bs-toggle="modal"
-                                data-bs-target="#filterModal">
-                            <i class="bi fs-3 bi-funnel"></i>
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <div class="col align-content-center text-end">
+                    <button type="button" class="btn btn-lg plus-btn" data-bs-toggle="modal"
+                            data-bs-target="#subscribeModal">
+                        <i class="bi fs-1 bi-plus-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-2">
+                <button class="btn btn-news btn-news-active">
+                    Підписки
+                </button>
+                <button class="btn btn-news">
+                    Рекомендаціі
+                </button>
             </div>
         </div>
-        <div class="col align-content-center text-end">
-            <button type="button" class="btn btn-lg plus-btn" data-bs-toggle="modal"
-                    data-bs-target="#subscribeModal">
-                <i class="bi fs-1 bi-plus-circle"></i>
-            </button>
-        </div>
-    </div>
-    <div class="mb-2 ms-4">
-        <button class="btn btn-news btn-news-active">
-            Підписки
-        </button>
-        <button class="btn btn-news">
-            Рекомендаціі
-        </button>
-    </div>
+
     <div class="news-sheet-container">
-        <div class="news-sheet row justify-content-center">
+        <div class="news-sheet row  justify-content-center">
             {% for news in page_obj %}
                 <div class="col col-lg-5 col-md-5 col-sm-10 mx-lg-4 mx-md-3 mx-sm-0 my-3 news-item">
                     <div class="row news-content">
