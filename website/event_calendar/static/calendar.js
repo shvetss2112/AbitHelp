@@ -32,7 +32,7 @@ export class EventCalendar {
             this._makeRequest(newDate);
         }
         this.date = new Date(newDate);
-        this._calendar = generateDiv(this._container, "container cal-calendar");
+        this._calendar = generateDiv(this._container, "container cal-calendar ps-0");
         this._monthTitle = this._generateMonthBar();
         this._weekBar = this._generateWeekBar();
         this._dayGrid = this._generateDayGrid();
