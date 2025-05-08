@@ -43,18 +43,19 @@
         <div class="news-sheet row  justify-content-center">
             {% for news in page_obj %}
                 <!-- оце новинка тупо -->
-                <div class="col-lg-5 col-md-5 col-sm-10
-                                mx-lg-4  mx-md-3  mx-sm-0
+                <div class="col-lg-5 col-md-10 col-sm-10
+                            mx-lg-4  mx-md-0  mx-sm-0
                  my-3 news-item">
                     <div class="row news-content">
                         <div class="col d-flex flex-column news-text">
-                            <div class="row news-title">
-                                <h5 class="px-0">Title</h5>
+                            <div class="row news-title ">
+                                <a class="ps-0" href="{{ news.id }}">
+                                    <h5 >{{ news }}</h5>
+                                </a>
                             </div>
-                            <div class="row new-body">
-                                {{ news }}
+                            <div class="row mb-2 new-body">
+                                <a class="ps-0" href="{{ news.id }}">{{ news.content|truncatewords:20 }}</a>
                             </div>
-
                             <div class="row mt-auto news-date">
                                 14.88.1488<br>
                                 14:88
