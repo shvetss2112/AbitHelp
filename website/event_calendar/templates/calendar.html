@@ -1,12 +1,17 @@
 {% extends "master.html" %}
 {% block title %}Календар{% endblock %}
-{% block style %}<link rel="stylesheet" href="../static/calendar.css" >{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="../static/calendar.css">{% endblock %}
 {% block content %}
-<div class="row container-fluid justify-content-center">
-    <div class="col-lg-3 col-md-6 col-sm-8" id="cal-container"></div>
-    <div class="col-lg-9 col-md-12 col-sm-12" id="cal-events-container">
-        <div class="row text-center cal-event-date-title"><h4>Події цього дня</h4></div>
+    <div class="mx-auto" id="page-container">
+        <div class="row container-fluid justify-content-center">
+            <div class="col-lg-3 col-md-6 col-sm-8 ps-0" id="cal-container"></div>
+            <div class="col-lg-9 col-md-12 col-sm-12" id="cal-events-container">
+                <div class="row text-center cal-event-date-title"><h4>Події цього дня</h4></div>
+            </div>
+        </div>
     </div>
-</div>
+
 {% endblock %}
-{% block script %}<script type=module src="../static/main.js"></script>{% endblock %}
+{% block script %}
+    <script type=module src="../static/main.js"></script>{% endblock %}
