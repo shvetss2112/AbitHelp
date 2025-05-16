@@ -2,8 +2,10 @@ from django.shortcuts import render
 from events.models import Event
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def index(request):
     return render(request, 'index.html')
 
@@ -12,6 +14,7 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 
+@login_required
 def my_news(request):
     search_term = request.GET.get("search")
     queryset = Event.objects
@@ -30,6 +33,7 @@ def my_news(request):
     return render(request, 'my_news.html', {"page_obj": page_obj, "search_term": search_term})
 
 
+@login_required
 def news_detail(request, id):
     news = Event.objects.filter(id=id).first()
     return render(request, 'news_detail.html', {"news": news})
