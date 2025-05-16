@@ -28,3 +28,8 @@ def my_news(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'my_news.html', {"page_obj": page_obj, "search_term": search_term})
+
+
+def news_detail(request, id):
+    news = Event.objects.filter(id=id).first()
+    return render(request, 'news_detail.html', {"news": news})
