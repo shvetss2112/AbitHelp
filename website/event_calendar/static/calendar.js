@@ -207,7 +207,7 @@ export class EventList {
         let text_container = generateDiv(event,"col-sm-12 col-lg-10");
         let event_text = document.createElement("a");
         event.appendChild(event_text);
-        event_text.setAttribute('href','#/events/'+new_event.id);
+        event_text.setAttribute('href','/'+new_event.id);
         text_container.appendChild(event_text);
         let dop_col = generateDiv(event,"col col-lg-2");
         let dop_row = generateDiv(dop_col, "row h-100 align-items-stretch");
