@@ -148,19 +148,30 @@
         </div>
         <div class="modal-body">
             <div class="mb-3">
-                <select class="form-select">
-                    <option selected>Any</option>
-                    <option>Facebook</option>
-                    <option>Twitter</option>
-                    <option>Instagram</option>
+                <select class="form-select" id="subscribe_resource">
+                    {% for resource in resources %}
+                        <option value="{{ resource.id }}">{{ resource.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="mb-3">
                 <div class="modal-footer border-0">
-                    <button class="btn w-100">Підписатись</button>
+                    <button class="btn w-100" onclick="onSubscribeClick(event)">Підписатись</button>
+                    <a href="/subscribe/"></a>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
-{% block script %}{% endblock %}
+{% block script %}
+<script>
+    async function onSubscribeClick(e) {
+        e.preventDefault();
+        const select = document.getElementById('subscribe_resource');
+        const selectedValue = select ? select.value : null;
+        if (selectedValue) {
+            window.location.href = `/subscribe/${encodeURIComponent(selectedValue)}`;
+        }
+    }
+</script>
+{% endblock %}

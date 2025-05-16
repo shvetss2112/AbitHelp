@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.contrib.auth.models import User
 
 
 class Event(models.Model):
@@ -21,3 +21,14 @@ class Resource(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name='subscribers')
+
+    class Meta:
+        unique_together = ('user', 'resource')
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.resource.name}"
