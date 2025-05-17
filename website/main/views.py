@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from events.models import Event, Resource, Subscription, Like
-from django.core.paginator import Paginator
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .filters import EventFilter
+from django.utils.decorators import method_decorator
+from django_filters.views import FilterView
 
 
 @login_required
@@ -14,36 +15,26 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 
-@login_required
-def my_news(request):
-    search_term = request.GET.get("search")
-    queryset = Event.objects.filter(source__subscribers__user=request.user)
+@method_decorator(login_required, name='dispatch')
+class MyNewsView(FilterView):
+    model = Event
+    template_name = 'my_news.html'
+    context_object_name = 'object_list'
+    paginate_by = 10
+    filterset_class = EventFilter
 
-    if search_term:
-        queryset = queryset.filter(
-            Q(content__icontains=search_term) | Q(title__icontains=search_term)
+    def get_queryset(self):
+        return Event.objects.filter(source__subscribers__user=self.request.user).order_by('-created_at')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_obj = context["page_obj"]
+        user = self.request.user
+        context["liked_event_ids"] = set(
+            Like.objects.filter(user=user, event__in=page_obj).values_list('event_id', flat=True)
         )
-
-    queryset = queryset.order_by('-created_at')
-
-    paginator = Paginator(queryset, 10)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    liked_event_ids = set(
-        Like.objects.filter(user=request.user, event__in=page_obj.object_list).values_list('event_id', flat=True)
-    )
-
-    return render(
-        request,
-        'my_news.html',
-        {
-            "page_obj": page_obj,
-            "search_term": search_term,
-            "resources": Resource.objects.all(),
-            "liked_event_ids": liked_event_ids
-        }
-    )
+        context["resources"] = Resource.objects.all()
+        return context
 
 
 @login_required

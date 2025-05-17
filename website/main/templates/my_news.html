@@ -41,7 +41,7 @@
 
     <div class="news-sheet-container">
         <div class="news-sheet row  justify-content-center">
-            {% if page_obj.object_list %}
+            {% if page_obj %}
                 {% for news in page_obj %}
                     <!-- оце новинка тупо -->
                     <div class="col-lg-5 col-md-10 col-sm-10
@@ -112,45 +112,47 @@
                     <h5 class="modal-title" id="filterModalLabel">Діалог фільтрів пошуку</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Часові межі</label>
-                        <div class="d-flex gap-2">
-                            <span class="align-self-center">З</span>
-                            <input type="text" class="form-control" placeholder="??.??.??">
-                            <span class="align-self-center">До</span>
-                            <input type="text" class="form-control" placeholder="??.??.??">
+                <form method="get" action="{% url 'index' %}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Часові межі</label>
+                            <div class="d-flex gap-2">
+                                <span class="align-self-center">З</span>
+                                <input name="date_from" type="text" class="form-control" placeholder="dd.mm.yyyy">
+                                <span class="align-self-center">До</span>
+                                <input name="date_to" type="text" class="form-control" placeholder="dd.mm.yyyy">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ресурс</label>
+                            <select class="form-select" name="resource">
+                                    <option value="" selected>Будь-який</option>
+                                {% for resource in resources %}
+                                    <option value="{{ resource.name }}">{{ resource.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Тільки новини які включають слова</label>
+                            <input name="must_include" type="text" class="form-control" placeholder="Value">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Не включають жодного з слів</label>
+                            <input name="exclude" type="text" class="form-control" placeholder="Value">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Включають будь яке з слів</label>
+                            <input name="include_any" type="text" class="form-control" placeholder="Value">
                         </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Ресурс</label>
-                        <select class="form-select">
-                            <option selected>Any</option>
-                            <option>Facebook</option>
-                            <option>Twitter</option>
-                            <option>Instagram</option>
-                        </select>
+                    <div class="modal-footer border-0">
+                        <button type="submit" class="btn w-100">Застосувати</button>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Тільки новини які включають слова</label>
-                        <input type="text" class="form-control" placeholder="Value">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Не включають жодного з слів</label>
-                        <input type="text" class="form-control" placeholder="Value">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Включають будь яке з слів</label>
-                        <input type="text" class="form-control" placeholder="Value">
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button class="btn w-100">Застосувати</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
