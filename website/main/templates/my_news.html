@@ -63,7 +63,18 @@
                             </div>
                             <div class="col d-flex flex-column text-end news-image-frame">
                                 <img class="news-image ms-auto my-auto" src="{{ news.image.url }}">
-                                <div class="btn ms-auto mt-auto"><i class="bi bi-heart-fill"></i></div>
+                                <div class="btn ms-auto mt-auto">
+                                    <form action="{% url 'handle_like' news.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background: none; border: none; padding: 0;">
+                                            {% if news.id in liked_event_ids %}
+                                                <i style="color: #CA2424" class="bi bi-heart-fill"></i>
+                                            {% else %}
+                                                <i style="color: white" class="bi bi-heart-fill"></i>
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

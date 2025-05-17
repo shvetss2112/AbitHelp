@@ -32,3 +32,15 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -> {self.resource.name}"
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='event_likes')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'event')
+
+    def __str__(self):
+        return f"{self.user.username} likes {self.event.title}"

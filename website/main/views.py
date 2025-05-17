@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from events.models import Event, Resource, Subscription
+from events.models import Event, Resource, Subscription, Like
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -30,7 +30,31 @@ def my_news(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'my_news.html', {"page_obj": page_obj, "search_term": search_term, "resources": Resource.objects.all()})
+    liked_event_ids = set(
+        Like.objects.filter(user=request.user, event__in=page_obj.object_list).values_list('event_id', flat=True)
+    )
+
+    return render(
+        request,
+        'my_news.html',
+        {
+            "page_obj": page_obj,
+            "search_term": search_term,
+            "resources": Resource.objects.all(),
+            "liked_event_ids": liked_event_ids
+        }
+    )
+
+
+@login_required
+def handle_like(request, event_id):
+    ev = get_object_or_404(Event, id=event_id)
+    like = Like.objects.filter(user=request.user, event=ev).first()
+    if like:
+        like.delete()
+    else:
+        Like.objects.create(user=request.user, event=ev)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
