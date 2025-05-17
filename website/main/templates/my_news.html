@@ -41,36 +41,40 @@
 
     <div class="news-sheet-container">
         <div class="news-sheet row  justify-content-center">
-            {% for news in page_obj %}
-                <!-- оце новинка тупо -->
-                <div class="col-lg-5 col-md-10 col-sm-10
-                            mx-lg-4  mx-md-0  mx-sm-0
-                 my-3 news-item">
-                    <div class="row news-content">
-                        <div class="col d-flex flex-column news-text">
-                            <div class="row news-title ">
-                                <a class="ps-0" href="{{ news.id }}">
-                                    <h5 >{{ news }}</h5>
-                                </a>
+            {% if page_obj.object_list %}
+                {% for news in page_obj %}
+                    <!-- оце новинка тупо -->
+                    <div class="col-lg-5 col-md-10 col-sm-10
+                                mx-lg-4  mx-md-0  mx-sm-0
+                    my-3 news-item">
+                        <div class="row news-content">
+                            <div class="col d-flex flex-column news-text">
+                                <div class="row news-title ">
+                                    <a class="ps-0" href="{{ news.id }}">
+                                        <h5 >{{ news }}</h5>
+                                    </a>
+                                </div>
+                                <div class="row mb-2 new-body">
+                                    <a class="ps-0" href="{{ news.id }}">{{ news.content|truncatewords:20 }}</a>
+                                </div>
+                                <div class="row mt-auto news-date">
+                                    {{ news.created_at }}
+                                </div>
                             </div>
-                            <div class="row mb-2 new-body">
-                                <a class="ps-0" href="{{ news.id }}">{{ news.content|truncatewords:20 }}</a>
+                            <div class="col d-flex flex-column text-end news-image-frame">
+                                <img class="news-image ms-auto my-auto" src="{{ news.image.url }}">
+                                <div class="btn ms-auto mt-auto"><i class="bi bi-heart-fill"></i></div>
                             </div>
-                            <div class="row mt-auto news-date">
-                                14.88.1488<br>
-                                14:88
-                            </div>
-                        </div>
-                        <div class="col d-flex flex-column text-end news-image-frame">
-                            <img class="news-image ms-auto my-auto" src="{{ news.image.url }}">
-                            <div class="btn ms-auto mt-auto"><i class="bi bi-heart-fill"></i></div>
                         </div>
                     </div>
-                </div>
-                <!-- кінець новинки тупо -->
-            {% endfor %}
+                    <!-- кінець новинки тупо -->
+                {% endfor %}
+            {% else %}
+                Підпишіться на ресурс щоб побачити новини та події
+            {% endif %}
         </div>
     </div>
+    {% if page_obj.object_list %}
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
@@ -88,6 +92,7 @@
             {% endif %}
         </span>
     </div>
+    {% endif %}
 
     <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -165,8 +170,7 @@
 {% endblock %}
 {% block script %}
 <script>
-    async function onSubscribeClick(e) {
-        e.preventDefault();
+    function onSubscribeClick(e) {
         const select = document.getElementById('subscribe_resource');
         const selectedValue = select ? select.value : null;
         if (selectedValue) {

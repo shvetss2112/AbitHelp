@@ -3,7 +3,6 @@ from events.models import Event, Resource, Subscription
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from django import urls
 
 
 @login_required
@@ -44,4 +43,17 @@ def news_detail(request, id):
 def subscribe_resource(request, resource_id):
     resource = get_object_or_404(Resource, id=resource_id)
     Subscription.objects.get_or_create(user=request.user, resource=resource)
-    return redirect('/')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required
+def subscriptions(request):
+    subs = Subscription.objects.filter(user=request.user)
+    return render(request, 'subscriptions.html', {"subscriptions": subs, "resources": Resource.objects.all()})
+
+
+@login_required
+def unsubscribe_resource(request, resource_id):
+    if subscription := Subscription.objects.get(resource_id=resource_id, user=request.user):
+        subscription.delete()
+        return redirect('/subscriptions/')
