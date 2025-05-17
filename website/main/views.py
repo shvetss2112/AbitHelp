@@ -60,7 +60,8 @@ def handle_like(request, event_id):
 @login_required
 def news_detail(request, id):
     news = Event.objects.filter(id=id).first()
-    return render(request, 'news_detail.html', {"news": news})
+    is_liked = Like.objects.filter(user=request.user, event__id=id)
+    return render(request, 'news_detail.html', {"news": news, "is_liked": is_liked})
 
 
 @login_required
