@@ -16,7 +16,7 @@ class Event(models.Model):
 
 class EventImage(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='event_images/', default='events_images/default.jpg')
+    image = models.ImageField(upload_to='events_images/', default='events_images/default.jpg')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
