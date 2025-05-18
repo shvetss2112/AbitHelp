@@ -7,7 +7,11 @@ function generateDiv(parent, className = "", textContent = "") {
     parent.appendChild(div);
     return div;
 }
-
+function trimTextByWords(text, wordLimit) {
+  const words = text.trim().split(/\s+/); // Split by any whitespace
+  if (words.length <= wordLimit) return text;
+  return words.slice(0, wordLimit).join(" ") + "...";
+}
 export class EventCalendar {
     date = new Date();
     _container;
@@ -200,12 +204,13 @@ export class EventList {
         let date_time = buf_day+date.getDate()+'.'+buf_month+date.getMonth()+'.'+date.getFullYear();
         return date_time;
     }
-    _generateEventElem(new_event) {
+   async _generateEventElem(new_event) {
         let date_time = this._listTimeString(new_event);
         let date_date=this._listDateString(new_event);
         let event = generateDiv(this.eventList, "cal-event row");
         let text_container = generateDiv(event,"col-sm-12 col-lg-10");
         let event_text = document.createElement("a");
+        let trimmedText = trimTextByWords(new_event.content, 30);
         event.appendChild(event_text);
         event_text.setAttribute('href','/'+new_event.id);
         text_container.appendChild(event_text);
@@ -224,17 +229,28 @@ export class EventList {
         {
             heart.classList.remove('liked');
         }
-
         like_btn.appendChild(heart);
-
-
-        event_text.textContent = new_event.content;
+        event_text.textContent = trimmedText;
+        let csrfform= document.querySelectorAll("[name='csrfmiddlewaretoken']")[0]
+        let token =csrfform.value;
+        like_btn.addEventListener('click', () => {
+        fetch('/handle-like/' + `${new_event.id}`, {headers:{csrfmiddlewaretoken:`${token}`}})
+            .then(() => {
+                if (heart.classList.contains('liked')) {
+                    heart.style.color = 'white';
+                    heart.classList.remove('liked')
+                    new_event.is_liked=0;
+                } else if(!heart.classList.contains('liked')){
+                  heart.style.color = '#CA2424';
+                  heart.classList.add('liked');
+                  new_event.is_liked=1;
+                }
+            })
+    });
     }
-
     _generateNoEeventElem() {
         generateDiv(this.eventList, "cal-event", "Немає запланованих подій на цей період");
     }
-
     remove() {
         this.eventList.remove();
     }

@@ -1,132 +1,132 @@
 {% extends "master.html" %}
 {% block title %}Новини{% endblock %}
 {% block style %}
-<style>
-.news-detail-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 30px;
-    align-items: flex-start;
-    justify-content: center;
-}
+    <style>
+        .news-detail-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: flex-start;
+            justify-content: center;
+        }
 
-.news-detail-card {
-    overflow-y: auto;
-    background-color: #1C2027;
-    border-radius: 20px;
-    border: 4px solid #161A1FFF;
-    padding: 30px;
-    color: #ffffff;
-    flex: 1 1 400px;
-    min-width: 300px;
-    width: 400px;
-    max-width: 800px;
-}
+        .news-detail-card {
+            overflow-y: auto;
+            background-color: #1C2027;
+            border-radius: 20px;
+            border: 4px solid #161A1FFF;
+            padding: 30px;
+            color: #ffffff;
+            flex: 1 1 400px;
+            min-width: 300px;
+            width: 400px;
+            max-width: 800px;
+        }
 
-.news-detail-card h5 {
-    margin-bottom: 15px;
-    font-size: 1.5rem;
-}
+        .news-detail-card h5 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
 
-.news-detail-card p {
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
+        .news-detail-card p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
 
-.carousel {
-    width: 100%;
-    max-width: 500px;
-    height: 300px;
-    flex: 1 1 300px;
-    overflow: hidden;
-    border-radius: 0.5rem;
-}
+        .carousel {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            flex: 1 1 300px;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
 
-.carousel-inner {
-    width: 100%;
-    height: 100%;
-}
+        .carousel-inner {
+            width: 100%;
+            height: 100%;
+        }
 
-.carousel-item {
-    width: 100%;
-    height: 100%;
-}
+        .carousel-item {
+            width: 100%;
+            height: 100%;
+        }
 
-.carousel img {
-    width: 100%;
-    height: 100%;
-    background-color:#1C2027;
-    object-fit: contain;
-    border-radius:10px;
-    border: 4px solid #161A1FFF;
-}
+        .carousel img {
+            width: 100%;
+            height: 100%;
+            background-color: #1C2027;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 4px solid #161A1FFF;
+        }
 
-.carousel img[src*="via.placeholder.com"] {
-    background-color: #555;
-}
+        .carousel img[src*="via.placeholder.com"] {
+            background-color: #555;
+        }
 
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%;
-}
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+        }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: transparent;
-    border:0;
-}
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: transparent;
+            border: 0;
+        }
 
-.news-actions {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #444;
-}
+        .news-actions {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
 
-#like-button {
-    color: #adb5bd;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-}
+        #like-button {
+            color: #adb5bd;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
 
-#like-button.liked {
-    color: #dc3545;
-}
+        #like-button.liked {
+            color: #dc3545;
+        }
 
-.site-link {
-    display: inline-flex;
-    align-items: center;
-    color: #adb5bd;
-    text-decoration: none;
-}
+        .site-link {
+            display: inline-flex;
+            align-items: center;
+            color: #adb5bd;
+            text-decoration: none;
+        }
 
-.site-link i {
-    margin-right: 5px;
-}
+        .site-link i {
+            margin-right: 5px;
+        }
 
-.site-link:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
+        .site-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
 
-</style>
+    </style>
 {% endblock %}
 {% block content %}
-     <div class="news-detail-container">
-        
+    <div class="news-detail-container">
+
         <div class="news-detail-card">
             <h5 id="news-title">{{ news.title }}</h5>
             <p id="news-description">{{ news.content }}</p>
             <small id="news-date">{{ news.created_at }}</small>
-            
+
             <div class="news-actions d-flex justify-content-between align-items-center">
                 <form action="{% url 'handle_like' news.id %}">
                     {% csrf_token %}
-                    <div class="btn btn-like" id="btn-like:{{ news.id }}" >
+                    <div class="btn btn-like" id="btn-like:{{ news.id }}">
                         {% if is_liked %}
-                            <i  class="bi liked bi-heart-fill"></i>
+                            <i class="bi liked bi-heart-fill"></i>
                         {% else %}
                             <i class="bi bi-heart-fill"></i>
                         {% endif %}
@@ -139,35 +139,39 @@
                 </a>
             </div>
         </div>
-        
-        
-        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" id="carousel-inner">
-                <div class="carousel-item active">
-                    {% with images=news.images.all %}
-                        {% if images %}
-                            {% if images|length > 0 %}
-                                {% for image in images %}
-                                    <img src="{{ image.image.url }}">
-                                {% endfor %}
-                            {% else %}
-                                <img src="/media/events_images/default.jpg"">
-                            {% endif %}
-                        {% else %}
-                            <img src="/media/events_images/default.jpg"">
-                        {% endif %}
-                    {% endwith %}
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+        {% with images=news.images.all %}
+            <div id="carouselEvent" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+            {% if images %}
+
+                {% if images|length > 0 %}
+                    {% for image in images %}
+                        <div class="carousel-item ">
+                            <img class="d-block w-100" src="{{ image.image.url }}">
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <img src="/media/events_images/default.jpg">
+                {% endif %}
+            {% else %}
+                <img src="/media/events_images/default.jpg">
+            {% endif %}
+        {% endwith %}
+        </div>
+            <a class="carousel-control-prev" href="#carouselEvent" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Попередній</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Наступний</span>
-            </button>
+            </a>
+            <a class="carousel-control-next" href="#carouselEvent" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="font-weight: bold;" aria-hidden="true"></span>
+            </a>
+
         </div>
     </div>
 {% endblock %}
-{% block script %}{% endblock %}
+
+{% block script %}<script type="module" defer>
+    let image=document.querySelector('.carousel-item');
+     image.classList.add('active');
+
+</script>{% endblock %}
