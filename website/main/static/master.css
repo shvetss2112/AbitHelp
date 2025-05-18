@@ -6,7 +6,7 @@
 html, body {
     height: 100%;
     margin: 0;
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('./background.png');
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/media/assets/background.png');
     background-repeat: repeat;
     background-size: 30%;
 }
@@ -16,7 +16,7 @@ a{
     color: inherit;
 }
 #page{
-    background-color:rgba(34, 40, 49, 1);
+    background-color:#222831FF;
     min-height:100%;
 }
 #content{
