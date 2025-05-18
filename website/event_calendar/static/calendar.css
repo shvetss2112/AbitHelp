@@ -89,6 +89,10 @@
     border: 3px solid #161A1FFF;
     background-color: #1C2027;
 }
+.cal-event:hover {
+    border-color: #323444;
+    background-color: transparent;
+}
 .cal-event-date-title::after {
     content: "";
     display: block;

@@ -1,6 +1,4 @@
-.plus-btn{
-    margin-left:auto;
-}
+
 .news-sheet-container{
     justify-content: center;
     display: flex;
@@ -23,14 +21,18 @@
     border: 4px solid #161A1FFF;
     padding:2rem;
 }
+.news-item:hover {
+    border-color:#323444;
+    background-color:transparent;
+}
 .news-content{
-    background-color: #1C2027;
+
 }
 .news-text{
-    background-color: #1C2027;
+
 }
 .news-image-frame{
-    background-color: #1C2027;
+
 }
 .news-image{
     border-radius:10px;
@@ -52,3 +54,14 @@ h5{
     background-color: #323444;
     color:white;
  }
+ .funnel-btn{
+     border:0;
+ }
+ .pagination{
+     justify-content: center;
+     text-align: center;
+ }
+.plus-btn{
+    margin-left:auto;
+    border: 0;
+}

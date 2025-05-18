@@ -212,17 +212,19 @@ export class EventList {
         let dop_col = generateDiv(event,"col col-lg-2");
         let dop_row = generateDiv(dop_col, "row h-100 align-items-stretch");
         let dop_date = generateDiv(generateDiv(dop_row,"col col col-lg-12 col-md-6"),"list-item-date",date_date+'<br>'+date_time);
-        let like_btn = generateDiv(generateDiv(dop_row,"col col-lg-12 col-md-6 text-end d-flex"),"btn ms-auto mt-auto");
+        let like_btn = generateDiv(generateDiv(dop_row,"col col-lg-12 col-md-6 text-end d-flex"),"btn ms-auto mt-auto btn-like");
         let heart = document.createElement("i");
+        like_btn.id=`btn-like:${new_event.id}`;
+        heart.className = "bi bi-heart-fill";
         if (new_event.is_liked)
         {
-            heart.style.color = '#CA2424';
+            heart.classList.add('liked');
         }
         else
         {
-            heart.style.color = 'white';
+            heart.classList.remove('liked');
         }
-        heart.className = "bi bi-heart-fill";
+
         like_btn.appendChild(heart);
 
 
