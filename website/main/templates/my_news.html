@@ -62,7 +62,11 @@
                                 </div>
                             </div>
                             <div class="col d-flex flex-column text-end news-image-frame">
-                                <img class="news-image ms-auto my-auto" src="{{ news.images.first.image.url }}">
+                                {% if news.images.first %}
+                                    <img class="news-image ms-auto my-auto" src="{{ news.images.first.image.url }}">
+                                {% else %}
+                                    <img class="news-image ms-auto my-auto" src="/media/events_images/default.jpg">
+                                {% endif %}
                                 <div class="btn ms-auto mt-auto">
                                     <form action="{% url 'handle_like' news.id %}">
                                         {% csrf_token %}
