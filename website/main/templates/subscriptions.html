@@ -1,108 +1,41 @@
 {% extends "master.html" %}
 {% block style %}
-    <style>
-        .modal-content {
-            background-color: rgba(34, 40, 49, 0.95);
-        }
-        .form-control {
-            background-color: #444;
-            color: #ffffff;
-            border: none;
-        }
-        .form-control::placeholder {
-            color: #adb5bd;
-        }
-        .form-control:focus {
-            background-color: #444;
-            color: #ffffff;
-            border-color: #6c757d;
-        }
-        .btn-add {
-            margin-bottom: 575px;
-            margin-right: 250px;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(185, 181, 181, 0.2);
-            transition: all 0.3s ease;
-            background-color: #ffffff;
-            color: #110d0d !important;
-        }
-        .btn-add:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(230, 229, 229, 0.3);
-            background-color: #000000;
-        }
-        body {
-            position: relative;
-            color: #ffffff;
-        }
-        .subscriptions-list {
-            padding-top: 20px;
-            padding-right: 450px;
-        }
-        .list-group-item {
-            background-color: rgb(31, 31, 44);
-            border: 1px solid #444;
-            border-radius: 0.5rem;
-            color: #ffffff;
-            margin-bottom: 10px;
-            padding: 15px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .list-group-item:hover {
-            background-color: rgb(41, 41, 54);
-        }
-        .list-group-item span {
-            text-transform: uppercase;
-            font-weight: 500;
-        }
-        .btn-outline-danger {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #ffffff;
-        }
-        .text-muted {
-            color: #adb5bd !important;
-        }
-    </style>
-{% endblock %}
+    <link href="../static/subscriptions.css" rel="stylesheet">{% endblock %}
 {% block content %}
-    <div class="subscriptions-list" style="margin-left: 130px; max-width: 1300px;">
+    <div class="subscriptions-list mx-auto ">
         <h5 class="text mb-3">Ресурси:</h5>
-        <div class="list-group">
-            {% for subscription in subscriptions %}
-            <div class="list-group-item d-flex justify-content-between align-items-center" style="margin-top: 15px;" data-link="{{ subscription.resource.link }}">
-                <span>{{ subscription.resource.name }}</span>
-                <button class="btn btn-sm btn-outline-danger delete-btn" data-link="{{ subscription.resource.id }}">
-                    <i class="bi bi-trash"></i>
-                </button>
+        <div class="row">
+            <div class="list-group col-7">
+                {% for subscription in subscriptions %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center"
+                          data-link="{{ subscription.resource.link }}">
+                        <span>{{ subscription.resource.name }}</span>
+                        <button class="btn btn-sm btn-outline-danger delete-btn"
+                                data-link="{{ subscription.resource.id }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                {% endfor %}
             </div>
-            {%endfor %}
+            <div class="col text-end">
+                <a href="#" class="btn btn-lg plus-btn" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                    <i class="bi fs-1 bi-plus-circle"></i>
+                </a>
+            </div>
         </div>
     </div>
 
-    <a href="#" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addEventModal">
-        <i class="bi bi-plus-lg"></i>
-    </a>
+
+
+
 
     <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content rounded-4 p-4">
                 <div class="modal-header border-0">
                     <h5 class="modal-title text-muted" id="addEventModalLabel">Додати ресурс</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрити"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Закрити"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -147,5 +80,5 @@
                 })
             })
         });
-    </script> 
+    </script>
 {% endblock %}

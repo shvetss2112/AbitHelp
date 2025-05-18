@@ -29,14 +29,6 @@
                 </button>
             </div>
         </div>
-        <div class="mb-2 text-center">
-            <button class="btn btn-news btn-news-active">
-                Підписки
-            </button>
-            <button class="btn btn-news">
-                Рекомендаціі
-            </button>
-        </div>
     </div>
 
     <div class="news-sheet-container">
@@ -89,8 +81,7 @@
             {% endif %}
         </div>
     </div>
-    {% if page_obj.object_list %}
-    <div class="pagination">
+    <div class="pagination mb-3">
         <span class="step-links">
             {% if page_obj.has_previous %}
                 <a href="?page=1">&laquo; first</a>
@@ -98,7 +89,7 @@
             {% endif %}
 
             <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
             </span>
 
             {% if page_obj.has_next %}
@@ -107,7 +98,6 @@
             {% endif %}
         </span>
     </div>
-    {% endif %}
 
     <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
         <div class="modal-dialog">

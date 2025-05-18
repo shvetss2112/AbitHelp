@@ -1,0 +1,79 @@
+.modal-content {
+            background-color: rgba(34, 40, 49, 0.95);
+        }
+        .form-control {
+            background-color: #444;
+            color: #ffffff;
+            border: none;
+        }
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+        .form-control:focus {
+            background-color: #444;
+            color: #ffffff;
+            border-color: #6c757d;
+        }
+        .plus-btn{
+            margin-left:auto;
+            border: 0;
+        }
+        .btn-add {
+            margin-bottom: 575px;
+            margin-right: 250px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(185, 181, 181, 0.2);
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #110d0d !important;
+        }
+        .btn-add:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(230, 229, 229, 0.3);
+            background-color: #000000;
+        }
+        body {
+            position: relative;
+        }
+        .subscriptions-list {
+            max-width:90%;
+            padding:3rem;
+
+
+        }
+        .list-group-item {
+            background-color: #1C2027;
+            border:0;
+
+            margin-bottom: 10px;
+            padding: 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .list-group-item:hover {
+
+        }
+        .list-group-item span {
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .btn-outline-danger {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+        .text-muted {
+            color: #adb5bd !important;
+        }
