@@ -62,13 +62,13 @@
                                 <div class="btn ms-auto mt-auto">
                                     <form action="{% url 'handle_like' news.id %}">
                                         {% csrf_token %}
-                                        <button type="submit" style="background: none; border: none; padding: 0;">
+                                        <div class="btn-like" id="btn-like:{{ news.id }}">
                                             {% if news.id in liked_event_ids %}
-                                                <i style="color: #CA2424" class="bi bi-heart-fill"></i>
+                                                <i class="bi liked bi-heart-fill"></i>
                                             {% else %}
-                                                <i style="color: white" class="bi bi-heart-fill"></i>
+                                                <i class="bi bi-heart-fill"></i>
                                             {% endif %}
-                                        </button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

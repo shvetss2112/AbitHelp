@@ -124,16 +124,16 @@
             <div class="news-actions d-flex justify-content-between align-items-center">
                 <form action="{% url 'handle_like' news.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-like"  >
+                    <div class="btn btn-like" id="btn-like:{{ news.id }}" >
                         {% if is_liked %}
                             <i  class="bi liked bi-heart-fill"></i>
                         {% else %}
                             <i class="bi bi-heart-fill"></i>
                         {% endif %}
-                    </button>
+                    </div>
                 </form>
-                
-                
+
+
                 <a href="{{ news.post_link }}" id="news-source-link" class="site-link" target="_blank">
                     <i class="bi bi-box-arrow-up-right"></i> Джерело
                 </a>
