@@ -33,7 +33,7 @@ class MyNewsView(FilterView):
         context["liked_event_ids"] = set(
             Like.objects.filter(user=user, event__in=page_obj).values_list('event_id', flat=True)
         )
-        context["resources"] = Resource.objects.all()
+        context["resources"] = Resource.objects.all().order_by('name')
         return context
 
 
@@ -65,7 +65,7 @@ def subscribe_resource(request, resource_id):
 @login_required
 def subscriptions(request):
     subs = Subscription.objects.filter(user=request.user)
-    return render(request, 'subscriptions.html', {"subscriptions": subs, "resources": Resource.objects.all()})
+    return render(request, 'subscriptions.html', {"subscriptions": subs, "resources": Resource.objects.all().order_by('name')})
 
 
 @login_required
