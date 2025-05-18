@@ -144,9 +144,15 @@
                 <div class="carousel-item active">
                     {% with images=news.images.all %}
                         {% if images %}
-                            {% for image in images %}
-                                <img src="{{ image.image.url }}">
-                            {% endfor %}
+                            {% if images|length > 0 %}
+                                {% for image in images %}
+                                    <img src="{{ image.image.url }}">
+                                {% endfor %}
+                            {% else %}
+                                <img src="/media/events_images/default.jpg"">
+                            {% endif %}
+                        {% else %}
+                            <img src="/media/events_images/default.jpg"">
                         {% endif %}
                     {% endwith %}
                 </div>
