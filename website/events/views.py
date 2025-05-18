@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Event, Like
+from .models import Event, Like, EventImage
 from .serializers import EventSerializer
 from .permissions import IsAdminOrReadOnly
 from rest_framework import filters
@@ -27,3 +27,12 @@ class EventViewSet(viewsets.ModelViewSet):
             liked_ids = set()
         context['liked_event_ids'] = liked_ids
         return context
+
+    def perform_create(self, serializer):
+        event = serializer.save()
+        images_data = self.request.FILES.getlist('images')
+        print(self.request)
+
+        print(event, images_data)
+        for image_data in images_data:
+            EventImage.objects.create(event=event, image=image_data)
