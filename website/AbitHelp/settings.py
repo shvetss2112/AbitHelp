@@ -30,6 +30,10 @@ if not SECRET_KEY:
 DEBUG = True
 
 ALLOWED_HOSTS = ['abithelp-cakf.uk', 'www.abithelp-cakf.uk', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [
+    'https://abithelp-cakf.uk',
+    'https://www.abithelp-cakf.uk'
+]
 
 
 # Application definition
