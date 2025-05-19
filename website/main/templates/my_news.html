@@ -47,7 +47,7 @@
                                     </a>
                                 </div>
                                 <div class="row mb-2 new-body">
-                                    <a class="ps-0" href="{{ news.id }}">{{ news.content|truncatewords:20 }}</a>
+                                    <a class="ps-0" href="{{ news.id }}">{{ news.content|truncatewords:15 }}</a>
                                 </div>
                                 <div class="row mt-auto news-date">
                                     {{ news.created_at }}
@@ -59,7 +59,7 @@
                                 {% else %}
                                     <img class="news-image ms-auto my-auto" src="/media/events_images/default.jpg">
                                 {% endif %}
-                                <div class="btn ms-auto mt-auto">
+                                <div class="btn ms-auto mt-auto pb-0">
                                     <form action="{% url 'handle_like' news.id %}">
                                         {% csrf_token %}
                                         <div class="btn-like" id="btn-like:{{ news.id }}">
