@@ -15,7 +15,6 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 
-@method_decorator(login_required, name='dispatch')
 class MyNewsView(FilterView):
     model = Event
     template_name = 'my_news.html'
@@ -24,15 +23,18 @@ class MyNewsView(FilterView):
     filterset_class = EventFilter
 
     def get_queryset(self):
-        return Event.objects.filter(source__subscribers__user=self.request.user).order_by('-created_at')
-    
+        if self.request.user.is_authenticated:
+            return Event.objects.filter(source__subscribers__user=self.request.user).order_by('-created_at')
+        return Event.objects.all().order_by('-created_at')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page_obj = context["page_obj"]
         user = self.request.user
-        context["liked_event_ids"] = set(
-            Like.objects.filter(user=user, event__in=page_obj).values_list('event_id', flat=True)
-        )
+        if self.request.user.is_authenticated:
+            context["liked_event_ids"] = set(
+                Like.objects.filter(user=user, event__in=page_obj).values_list('event_id', flat=True)
+            )
         context["resources"] = Resource.objects.all().order_by('name')
         return context
 
@@ -47,11 +49,11 @@ def handle_like(request, event_id):
         Like.objects.create(user=request.user, event=ev)
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
-
-@login_required
 def news_detail(request, id):
     news = Event.objects.filter(id=id).first()
-    is_liked = Like.objects.filter(user=request.user, event__id=id)
+    is_liked = False
+    if request.user.is_authenticated:
+        is_liked = Like.objects.filter(user=request.user, event__id=id).exists()
     return render(request, 'news_detail.html', {"news": news, "is_liked": is_liked})
 
 
