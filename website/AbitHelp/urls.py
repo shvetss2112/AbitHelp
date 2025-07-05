@@ -13,7 +13,9 @@ urlpatterns = [
     path('calendar/', include('event_calendar.urls')),
     path('accounts/', include('allauth.urls')),
     path('api-login/', api_login),
-    path('api/', include('events.urls'))
+    path('api/', include('events.urls')),
+    path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
