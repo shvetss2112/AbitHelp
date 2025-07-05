@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from .models import Event
+from .models import Event, Resource
 import uuid
+
+
+class ResourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resource
+        fields = '__all__'
 
 
 class EventSerializer(serializers.ModelSerializer):

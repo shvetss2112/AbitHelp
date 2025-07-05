@@ -1,9 +1,10 @@
 from rest_framework import routers
-from .views import EventViewSet, LikeView, UnlikeView, SubscriptionView, UnsubscribeView, GoogleLogin
+from .views import EventViewSet, LikeView, UnlikeView, SubscriptionView, UnsubscribeView, GoogleLogin, ResourceViewSet
 from django.urls import path, include
 
 router = routers.DefaultRouter()
 router.register(r'events', EventViewSet)
+router.register(r'resources', ResourceViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

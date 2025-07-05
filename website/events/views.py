@@ -1,7 +1,8 @@
 from rest_framework import viewsets, views, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Event, Like, EventImage, Subscription, Resource
-from .serializers import EventSerializer, EventLikeSerializer
+from .serializers import EventSerializer, EventLikeSerializer, ResourceSerializer
 from .permissions import IsAdminOrReadOnly
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,8 +12,15 @@ from dj_rest_auth.registration.views import SocialLoginView
 
 
 class GoogleLogin(SocialLoginView):
+    permission_classes = [AllowAny]
     adapter_class = GoogleOAuth2Adapter
     client_class = OAuth2Client
+
+
+class ResourceViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Resource.objects.all()
+    serializer_class = ResourceSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -40,14 +48,13 @@ class EventViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         event = serializer.save()
         images_data = self.request.FILES.getlist('images')
-        print(self.request)
-
-        print(event, images_data)
         for image_data in images_data:
             EventImage.objects.create(event=event, image=image_data)
 
 
 class LikeView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = EventLikeSerializer(data=request.data)
         if serializer.is_valid():
@@ -62,6 +69,8 @@ class LikeView(views.APIView):
 
 
 class UnlikeView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = EventLikeSerializer(data=request.data)
         if serializer.is_valid():
@@ -73,6 +82,8 @@ class UnlikeView(views.APIView):
 
 
 class SubscriptionView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         subscriptions = Subscription.objects.filter(user=request.user)
         return Response([{'resource_id': sub.resource.id, 'resource_name': sub.resource.name} for sub in subscriptions])
@@ -88,6 +99,8 @@ class SubscriptionView(views.APIView):
 
 
 class UnsubscribeView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         resource_id = request.data.get('resource_id')
         try:
