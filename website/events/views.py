@@ -9,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+from .filters import EventAPIFilter
 
 
 class GoogleLogin(SocialLoginView):
@@ -28,10 +29,7 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = {
-        'date': ['gte', 'lte'],
-    }
-    search_fields = ['content', 'date']
+    filterset_class = EventAPIFilter
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
