@@ -13,18 +13,20 @@ class EventAPIFilter(django_filters.FilterSet):
 
     class Meta:
         model = Event
-        fields = ['date', 'resource', 'date__gte', 'date__lte', 'exclude', 'include_any']
+        fields = ['resource', 'date__gte', 'date__lte', 'exclude', 'include_any']
 
     def filter_search(self, queryset, name, value):
         return queryset.filter(Q(title__icontains=value) | Q(content__icontains=value))
 
     def filter_exclude(self, queryset, name, value):
-        for word in value.split():
+	words = [word for word in value.split() if word]
+	for word in words:
             queryset = queryset.exclude(Q(title__icontains=word) | Q(content__icontains=word))
         return queryset
 
     def filter_include_any(self, queryset, name, value):
         q = Q()
-        for word in value.split():
-            q |= Q(title__icontains=word) | Q(content__icontains=word)
+	words = [word for word in value.split() if word]
+	for word in words:
+		q |= Q(title__icontains=word) | Q(content__icontains=word)
         return queryset.filter(q)

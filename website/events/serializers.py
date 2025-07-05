@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from .models import Event, Resource
-import uuid
-
 
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
