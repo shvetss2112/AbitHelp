@@ -23,3 +23,12 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_images(self, obj):
         return [image.image.url for image in obj.images.all()]
+
+
+class EventLikeSerializer(serializers.Serializer):
+    event_id = serializers.IntegerField()
+
+    def validate_event_id(self, value):
+        if not Event.objects.filter(pk=value).exists():
+            raise serializers.ValidationError("Event with this id does not exist.")
+        return value
