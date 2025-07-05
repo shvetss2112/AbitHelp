@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,6 +65,8 @@ INSTALLED_APPS = [
     'api_auth.apps.ApiAuthConfig',
     'event_calendar.apps.EventCalendarConfig'
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
