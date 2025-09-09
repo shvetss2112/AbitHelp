@@ -6,4 +6,4 @@ __pycache__/
 */.venv/
 */.idea/
 */__pycache__/
-
+docker-compose.yml
